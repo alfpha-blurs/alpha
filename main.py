@@ -300,34 +300,6 @@ def main(page: ft.Page):
             page.update()
 
     # -------------------------
-    # BUSCAR / FILTRAR
-    # -------------------------
-    seeker = ft.TextField(
-        on_change=lambda e: buscar_notas(e),
-        animate_scale=ft.Animation(300, ft.AnimationCurve.EASE_IN),
-        scale=0,
-        height=0,
-        border=ft.border.all(0, ft.Colors.TRANSPARENT),
-        border_width=0,
-        bgcolor=THEME["a2"],
-        prefix_icon=ft.Icons.SEARCH,
-        border_radius=ImportantVars.bradius,
-    )
-
-    def buscar_notas(e):
-        texto = e.control.value.lower().strip()
-        lista_contenedores.controls.clear()
-        for index, item in enumerate(data):
-            if item.get("Type", 1) != 1:
-                continue  # ignorar tipos no-nota
-            nombre = item.get("nombre", "").lower()
-            texto_nota = item.get("text", "").lower()
-            if texto in nombre or texto in texto_nota:
-                cont = crear_contenedor_nota(index, item)
-                lista_contenedores.controls.append(cont)
-        page.update()
-
-    # -------------------------
     # ANIMACION: mostrar/ocultar botones eliminar
     # -------------------------
     def reapariton_of_delete_button(e):
@@ -342,26 +314,22 @@ def main(page: ft.Page):
     # -------------------------
     def ir_a_form(e):
         page.go("/form")
-        seeker.scale = 0
-        seeker.height = 0
         note_text.scale = 1
         separation.height = 0
 
+
+
     def volver_a_inicio(e):
         page.go("/")
+        # Si el SearchBar está visible, ocultarlo
         page.update()
 
+
     def ir_a_editar(e, index: int):
-        if seeker.scale == 1:
-            change_seek
-            page.update()
         page.go(f"/edit/{index}")
 
 
     def go_to_settings(e):
-        if seeker.scale == 1:
-            change_seek
-            page.update()
         page.go('/settings')
 
 
@@ -381,7 +349,6 @@ def main(page: ft.Page):
             controls=[
                 ft.Icon(ft.Icons.MENU, color=THEME["text"]),
                 ft.IconButton(icon=ft.Icons.SETTINGS_OUTLINED, on_click=lambda e: go_to_settings(e), icon_color=THEME["text"]),
-                ft.IconButton(icon=ft.Icons.SEARCH, on_click=lambda e: change_seek(e), icon_color=THEME["text"]),
             ],
         ),
     )
@@ -401,28 +368,33 @@ def main(page: ft.Page):
             if tra.shadow is None
             else None
         )
+
         render_lista()
-        seeker.scale = 0
-        seeker.height = 0
-        note_text.scale = 1
-        separation.height = 0
+
         page.update()
 
     # mostrar/ocultar buscador
     def change_seek(e):
         if seeker.scale == 0:
+            seeker.value = ""
             # Mostrar buscador
             seeker.scale = 1
             seeker.height = 50
             separation.height = 50
             note_text.scale = 0
+            seeker.disabled = False
+            page.update()
             seeker.focus()
         else:
             # Ocultar buscador
+            seeker.value = ""
             seeker.scale = 0
             seeker.height = 0
             separation.height = 0
+            seeker.disabled = True
+            page.update()
             note_text.scale = 1
+            
             render_lista()  # restaurar lista completa
 
         page.update()
@@ -631,7 +603,6 @@ def main(page: ft.Page):
                     route="/",
                     controls=[
                         separation,
-                        seeker,
                         note_text,
                         ft.Divider(),
                         ft.Container(
@@ -729,8 +700,9 @@ def main(page: ft.Page):
         elif page.route.startswith("/form") or page.route.startswith("/edit"):
             
             text_field_main = ft.TextField(multiline=True, expand=True, border_width=0, border_radius=30, text_size=18,)
-            nombre_field = ft.TextField(border_width=0, border_radius=30, text_size=25)
+            nombre_field = ft.TextField(border_width=0, border_radius=30, text_size=25, hint_text='Título')
             preview_markdown = ft.Markdown(value="", selectable=True, expand=True, )
+
         
 
             is_edit = page.route.startswith("/edit")
@@ -847,6 +819,7 @@ def main(page: ft.Page):
                                     content=ft.Column(
                                         controls=[
                                             nombre_field,
+                                            ft.Divider(),
                                             editor_container,
                                             ft.Row(
                                                 controls=[
@@ -885,7 +858,6 @@ def main(page: ft.Page):
                     ],
                 )
             )
-
         page.update()
 
     page.on_route_change = route_change
