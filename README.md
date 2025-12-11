@@ -1,6 +1,8 @@
 # 📒 **Uxio — App de Notas en Python + Flet (Versión Base)**
 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+[![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com)
+
 
 
 ---
