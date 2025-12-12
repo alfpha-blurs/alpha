@@ -28,9 +28,8 @@ Más adelante existirá una **versión Pro / Código cerrado**, con muchas más 
 
 ### 🏠 Pantalla Principal
 
-```
-![Home](images/home.png)
-```
+[Home](images/home.png)
+
 
 ### 📝 Crear / Editar Nota
 
