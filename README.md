@@ -154,9 +154,8 @@ Publicaré la versión APK lista para instalar directamente en Android muy pront
 
 El enlace aparecerá aquí mismo:
 
-```
 📦 [Descargar APK](https://github.com/frensby-blurs/Uxio/releases/download/1.0.0/app-release.apk)
-```
+
 
 ---
 
